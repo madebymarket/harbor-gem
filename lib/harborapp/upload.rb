@@ -1,5 +1,5 @@
 require_relative "api_model"
-require "active_support/secure_random"
+require "securerandom"
 
 module Harborapp
   class Upload
