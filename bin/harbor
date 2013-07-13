@@ -62,8 +62,10 @@ command :upload do |c|
 		end
 		Harborapp.api_key = account.api_key
 		upload = Harborapp::Upload.get_curl_params(options.file)
-		upload.deliver
-		puts "File uploaded!  http://s3.amazonaws.com/harborapp/#{upload.key}"
+		if upload
+			upload.deliver
+			puts "File uploaded!  http://s3.amazonaws.com/harborapp/#{upload.key}"
+		end
   end
 end
 

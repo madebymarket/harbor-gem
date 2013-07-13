@@ -30,8 +30,6 @@ module Harborapp
 				self.execute_request(req_params)
 
 			rescue Errno::ECONNREFUSED => e
-puts e
-puts e.backtrace
 				raise ApiError.new(500, {}, {"errors" => [{"code" => 993, "message" => "Unable to connect to API server"}]})
 			rescue ExpiredApiKey => e
 				raise e
@@ -39,8 +37,6 @@ puts e.backtrace
 				raise e
       rescue Exception => e
 			# what kind of generic exceptions might we be loking for?
-puts e
-puts e.backtrace
 				raise ApiError.new(500, {}, {"errors" => [{"code" => 996, "message" => "Error getting response from API server "+e.inspect}]})
 			end
 		end
@@ -68,7 +64,6 @@ puts e.backtrace
 				ApiResponse.new Harborapp::Api.jack.execute(params)
 			else
 				RestClient::Request.new(params).execute do |response, request, result, &block|
-					puts response
 					response
 				end
 			end

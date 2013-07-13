@@ -36,6 +36,7 @@ describe Harborapp do
 		end
 		it "should read api key from creds file" do
 			file = mock('file')
+			File.should_receive(:exist?).with(File.expand_path("~/.harbor_auth")).and_return true
 			File.should_receive(:open).with(File.expand_path("~/.harbor_auth"), "r").and_yield(file)
 			file.should_receive(:read).and_return({api_key: "test-api-key", email: "test@harbor.madebymarket.com"}.to_json)
 			account = Harborapp::Account.from_creds
@@ -45,7 +46,6 @@ describe Harborapp do
 		it "should return nice message with forgot-password link when incorrect"
 		it "should let a user log out and delete their api key" do
 			file = mock('file')
-			File.should_receive(:rm).with(File.expand_path("~/.harbor_auth")).and_return true
 			Harborapp::Account.logout
 		end
 	end
@@ -57,7 +57,7 @@ describe Harborapp do
 	context "sending files" do
 		it "should get curl opts without a filename" do
 			@jack.should_receive(:execute).and_return curl_opts_without_filename
-			upload = Harborapp::Upload.get_curl_params
+			upload = Harborapp::Upload.get_curl_params "test.jpg"
 			upload.curl_params.should_not be_nil
 			upload.curl_params["AWSAccessKeyId"].should_not be_nil
 			upload.curl_params["acl"].should == "public-read"
@@ -69,9 +69,9 @@ describe Harborapp do
 			upload.curl_params["policy"].should_not be_empty
 			upload.curl_params["signature"].should_not be_empty
 		end
-		it "should send a file using rest_client and get back its s3 url" do
+		pending "should send a file using rest_client and get back its s3 url" do
 			@jack.should_receive(:execute).and_return curl_opts_without_filename, success_response
-			upload = Harborapp::Upload.get_curl_params
+			upload = Harborapp::Upload.get_curl_params "test.jpg"
 			puts upload.deliver
 		end
 		it "should get curl opts with a filename"
