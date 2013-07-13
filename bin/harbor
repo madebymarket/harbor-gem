@@ -7,6 +7,29 @@ require 'io/console'
 program :version, '0.0.1'
 program :description, 'Command-line interface for https://harbor.madebymarket.com file transfer service.'
 
+default_command :upload
+
+command :signup do |c|
+  c.syntax = 'harbor signup, [options]'
+  c.summary = ''
+  c.description = ''
+  c.example 'description', 'command example'
+  c.action do |args, options|
+		puts "Register for a free harbor account using your email address and a password."
+		email = ask "email address: " 
+		pw = password "choose password: "
+		pw_confirm = password "confirm password: "
+		account = Harborapp::Account.signup email, pw, pw_confirm
+		if account.success?
+			account.write_creds
+			puts "Account created, saving your credentials to #{File.expand_path("~/.harbor_auth")}."
+			puts "Once you have confirmed your account, you can run 'harbor --file /your/file.pdf' to upload files."
+		else
+			puts account.errors
+		end
+  end
+end
+
 command :login do |c|
   c.syntax = 'harbor login, [options]'
   c.summary = ''
@@ -33,6 +56,10 @@ command :upload do |c|
   c.option '--file STRING', String, 'File to upload'
   c.action do |args, options|
 		account = Harborapp::Account.from_creds
+		unless options.file
+			puts "Syntax: harbor --file /your/file.pdf"
+			exit 0
+		end
 		Harborapp.api_key = account.api_key
 		upload = Harborapp::Upload.get_curl_params(options.file)
 		upload.deliver

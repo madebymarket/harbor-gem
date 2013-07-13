@@ -10,6 +10,12 @@ module Harborapp
       Harborapp::Api.request :post, "/login", params
     end
 
+    def self.signup(email, password, password_confirmation)
+      params = {:email => email, :password => password, 
+				:password_confirmation => password_confirmation}
+      Harborapp::Api.request :post, "/signup", params
+    end
+
 		def write_creds
 			File.open(File.expand_path("~/.harbor_auth"), "w") do |f|
 				f.write({api_key: api_key, email: email}.to_json)
