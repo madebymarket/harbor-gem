@@ -17,14 +17,17 @@ module Harborapp
 		end
 
 		def self.from_creds
-			File.open(File.expand_path("~/.harbor_auth"), "r") do |f|
+			fn = File.expand_path("~/.harbor_auth")
+			raise Exception.new("Please log in first") unless File.exist? fn
+			File.open(fn, "r") do |f|
 				hash = JSON.parse f.read
 				self.new hash
 			end
 		end
 	
 		def self.logout
-			File.rm(File.expand_path("~/.harbor_auth"))
+			fn = File.expand_path("~/.harbor_auth")
+			File.unlink(fn) if File.exist? fn
 		end
   end
 end

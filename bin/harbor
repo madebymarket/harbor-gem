@@ -1,18 +1,27 @@
 #!/usr/bin/env ruby
-require_relative '../lib/harborapp'
+#
+require 'harborapp'
 require 'commander/import'
+require 'io/console'
 
 program :version, '0.0.1'
 program :description, 'Command-line interface for https://harbor.madebymarket.com file transfer service.'
- 
+
 command :login do |c|
   c.syntax = 'harbor login, [options]'
   c.summary = ''
   c.description = ''
   c.example 'description', 'command example'
-  c.option '--some-switch', 'Some switch that does something'
   c.action do |args, options|
-    # Do something or c.when_called Harbor::Commands::Login,
+		email = ask "Enter your email address: " 
+		pw = password "Enter your harbor password (will not be shown):"
+		account = Harborapp::Account.login email, pw
+		if account.success?
+			account.write_creds
+			puts "Logged in, saving your credentials to #{File.expand_path("~/.harbor_auth")}"
+		else
+			puts account.errors
+		end
   end
 end
 
@@ -21,9 +30,13 @@ command :upload do |c|
   c.summary = ''
   c.description = ''
   c.example 'description', 'command example'
-  c.option '--some-switch', 'Some switch that does something'
+  c.option '--file STRING', String, 'File to upload'
   c.action do |args, options|
-    # Do something or c.when_called Harbor::Commands::Upload,
+		account = Harborapp::Account.from_creds
+		Harborapp.api_key = account.api_key
+		upload = Harborapp::Upload.get_curl_params(options.file)
+		upload.deliver
+		puts "File uploaded!  http://s3.amazonaws.com/harborapp/#{upload.key}"
   end
 end
 
@@ -34,7 +47,8 @@ command :logout do |c|
   c.example 'description', 'command example'
   c.option '--some-switch', 'Some switch that does something'
   c.action do |args, options|
-    # Do something or c.when_called Harbor::Commands::Logout
+		Harborapp::Account.logout 
+		puts "You've been logged out successfully."
   end
 end
 
