@@ -1,6 +1,40 @@
 #!/usr/bin/env ruby
+require_relative '../lib/harborapp'
+require 'commander/import'
 
-require 'harborapp'
+program :version, '0.0.1'
+program :description, 'Command-line interface for https://harbor.madebymarket.com file transfer service.'
+ 
+command :login do |c|
+  c.syntax = 'harbor login, [options]'
+  c.summary = ''
+  c.description = ''
+  c.example 'description', 'command example'
+  c.option '--some-switch', 'Some switch that does something'
+  c.action do |args, options|
+    # Do something or c.when_called Harbor::Commands::Login,
+  end
+end
 
-puts ARGV.inspect
+command :upload do |c|
+  c.syntax = 'harbor upload, [options]'
+  c.summary = ''
+  c.description = ''
+  c.example 'description', 'command example'
+  c.option '--some-switch', 'Some switch that does something'
+  c.action do |args, options|
+    # Do something or c.when_called Harbor::Commands::Upload,
+  end
+end
+
+command :logout do |c|
+  c.syntax = 'harbor logout [options]'
+  c.summary = ''
+  c.description = ''
+  c.example 'description', 'command example'
+  c.option '--some-switch', 'Some switch that does something'
+  c.action do |args, options|
+    # Do something or c.when_called Harbor::Commands::Logout
+  end
+end
 
