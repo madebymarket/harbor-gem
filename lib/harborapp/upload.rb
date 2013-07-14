@@ -7,11 +7,10 @@ module Harborapp
     attr_accessor :file_path, :curl_params, :s3_folder, :key
 
 		def self.get_curl_params file
-			params = { :file => file }
+			params = { :file => file, :size => File.size(file) }
       upload = Harborapp::Api.request :post, "/uploads/curl", params
 			if upload.success?
 				upload.file_path = file
-				upload.key = upload.s3_folder + "/" + SecureRandom.hex(6) + "-" + File.basename(file)
 				upload
 			else
 				puts upload.errors
