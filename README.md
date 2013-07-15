@@ -16,20 +16,22 @@ The simplest way to do this is to get the public gpg key for the people you expe
 
 Now, to the fun part:
 
-		$ gpg --encrypt -o your-encrypted-file.txt.gpg passwords.txt
+    $ gpg --encrypt -o your-encrypted-file.txt.gpg passwords.txt
 
-		# now, you'll get a short series of prompts asking who should be able to decrypt this file.  Enter your own
-		# email address first if you expect to need to decrypt the file at some point, then hit enter.
-		> Enter the user ID.  End with an empty line: bryan@madebymarket.com
-		
-		# You'll see a bit of output with yourself listed as a recipient of the file.  Now you can go ahead and enter
-		# the other people who should be able to decrypt this file.  Type their email address and hit enter, when
-		# you're finished with that, hit enter and it'll go on and it'll kick out your encrypted file.
+    # now, you'll get a short series of prompts asking who should be able to decrypt this file.  
+    # Enter your own email address first if you expect to need to decrypt the file at some point, 
+    # then hit enter.
+    > Enter the user ID.  End with an empty line: bryan@madebymarket.com
 
-		# now you'll have a file called your-encrypted-file.txt.gpg -- just throw that file into Harbor and give
-		# the link out to people who need to download & decrypt it.
+    # You'll see a bit of output with yourself listed as a recipient of the file.  Now you can go 
+    # ahead and enter the other people who should be able to decrypt this file.  Type their email 
+    # address and hit enter, when you're finished with that, hit enter and it'll go on and it'll 
+    # kick out your encrypted file.
 
-		$ harbor --file your-encrypted-file.txt.gpg
+    # now you'll have a file called your-encrypted-file.txt.gpg -- just throw that file into 
+    # Harbor and give the link out to people who need to download & decrypt it.
+
+    $ harbor --file your-encrypted-file.txt.gpg
 
 #### Decrypting files with your key
 
@@ -41,22 +43,22 @@ This is super simple, especailly with the GPG Tools.  With your encrypted file, 
 
 If you want to encrypt a file with a password and don't want to go through all of that key business, simply do:
 
-		$ gpg -o encrypted.txt.gpg --symmetric passwords.txt
-		# It will ask you for a password to use to encrypt it and then it'll kick out a file called encrypted.txt.gpg
-		# just like above, toss that file at Harbor and it'll give you a download link to share.
+    $ gpg -o encrypted.txt.gpg --symmetric passwords.txt
+    # It will ask you for a password to use to encrypt it and then it'll kick out a file called encrypted.txt.gpg
+    # just like above, toss that file at Harbor and it'll give you a download link to share.
 
-		$ harbor --file encrypted.txt.gpg
+    $ harbor --file encrypted.txt.gpg
 	
 #### Decrypting files with pass phrases
 
-		$ gpg --decrypt -o passwords.txt passwords.txt.gpg
-		# it'll prompt you for the password used to encrypt the file, then it'll spit out a passwords.txt file. 
+    $ gpg --decrypt -o passwords.txt passwords.txt.gpg
+    # it'll prompt you for the password used to encrypt the file, then it'll spit out a passwords.txt file. 
 
 ## Signing up
 
 Harbor accounts are completely free for transferring files under 1M, and we have monthly plans to fit any budget.  We welcome any input and would happily try to tailer a plain to your needs.  You can sign up on the website, or through the gem:
 
-		$ gem install harborapp
+    $ gem install harborapp
     $ harbor signup
 
 You'll receive an email with a link to confirm your account.  You know the drill. 
