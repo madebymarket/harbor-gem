@@ -44,15 +44,17 @@ This is super simple, especailly with the GPG Tools.  With your encrypted file, 
 If you want to encrypt a file with a password and don't want to go through all of that key business, simply do:
 
     $ gpg -o encrypted.txt.gpg --symmetric passwords.txt
-    # It will ask you for a password to use to encrypt it and then it'll kick out a file called encrypted.txt.gpg
-    # just like above, toss that file at Harbor and it'll give you a download link to share.
+    # It will ask you for a password to use to encrypt it and then it'll kick out a file called 
+    # encrypted.txt.gpg just like above, toss that file at Harbor and it'll give you a 
+    # s3 download link to share.
 
     $ harbor --file encrypted.txt.gpg
 	
 #### Decrypting files with pass phrases
 
     $ gpg --decrypt -o passwords.txt passwords.txt.gpg
-    # it'll prompt you for the password used to encrypt the file, then it'll spit out a passwords.txt file. 
+    # it'll prompt you for the password used to encrypt the file, then it'll spit out a 
+    # readable passwords.txt file. Don't forget the -o or your terminal will get noisy. 
 
 ## Signing up
 
